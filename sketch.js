@@ -1,37 +1,45 @@
-var car,wall;
-var speed,weight;
 
-function setup() {
-  createCanvas(1600,400);
- car=createSprite(50,200, 50,50);
- car.shapecolor="white"
- wall=createSprite(1500,200,60,height/2);
+const Engine=Matter.Engine;
+const World=Matter.World;
+const Bodies=Matter.Bodies;
+const Body=Matter.Body;
 
- speed=random(55,90)
- weight=random(400,1500)
-}
-
-function draw() {
-  background("lightblue"); 
-  
-  car.velocityX=speed;
- if(wall.x-car.x < (car.width + wall.width)/2)
- {
- car.velocityX=0;
- var deformation=0.5*weight*speed*speed/22500
- if (deformation>180)
- {
- car.shapeColor=color("red");
- }
-
- if(deformation<180 && deformation>100)
+function setup() 
 {
-  car.shapeColor=color("yellow");
+	createCanvas(750,700);
+
+	engine=Engine.create();
+	world=engine.world;
+
+	ground=new Ground(600,700,1200,20)
+	D1=new Dustbin(600,680,200,15);
+	D2=new Dustbin(500,615,15,150);
+    D3=new Dustbin(700,615,15,150);
+
+	paper=new Paper(100,600,50);
+	Engine.run(engine);
 }
- if(deformation<100)
- {
-  car.shapeColor=color("lightgreen");
- }
- drawSprites();
+
+function draw() 
+{
+  rectMode(CENTER);
+  background(0);
+
+  drawSprites();
+  paper.display();
+  ground.display();
+  D1.display();
+  D2.display();
+  D3.display();
 }
+
+function keyPressed()
+{
+
+if(keyCode===UP_ARROW) 
+{
+Matter.Body.applyForce(paper.body,paper.body.position,{x:370,y:-370});
 }
+
+}
+
