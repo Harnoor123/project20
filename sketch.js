@@ -1,45 +1,65 @@
+var helicopterIMG, helicopterSprite, packageSprite,packageIMG;
+var packageBody,ground
+const Engine = Matter.Engine;
+const World = Matter.World;
+const Bodies = Matter.Bodies;
+const Body = Matter.Body;
 
-const Engine=Matter.Engine;
-const World=Matter.World;
-const Bodies=Matter.Bodies;
-const Body=Matter.Body;
-
-function setup() 
+function preload()
 {
-	createCanvas(750,700);
-
-	engine=Engine.create();
-	world=engine.world;
-
-	ground=new Ground(600,700,1200,20)
-	D1=new Dustbin(600,680,200,15);
-	D2=new Dustbin(500,615,15,150);
-    D3=new Dustbin(700,615,15,150);
-
-	paper=new Paper(100,600,50);
-	Engine.run(engine);
+	helicopterIMG=loadImage("helicopter.png")
+	packageIMG=loadImage("package.png")
 }
 
-function draw() 
-{
+function setup() {
+	createCanvas(800, 700);
+	rectMode(CENTER);
+	
+
+	packageSprite=createSprite(width/2, 80, 10,10);
+	packageSprite.addImage(packageIMG)
+	packageSprite.scale=0.2
+
+	helicopterSprite=createSprite(width/2, 200, 10,10);
+	helicopterSprite.addImage(helicopterIMG)
+	helicopterSprite.scale=0.6
+
+	groundSprite=createSprite(width/2, height-35, width,10);
+	groundSprite.shapeColor=color(255)
+
+
+	engine = Engine.create();
+	world = engine.world;
+
+	packageBody = Bodies.circle(width/2 , 200 , 5 , {restitution:0.4, isStatic:true});
+	World.add(world, packageBody);
+	
+
+	//Create a Ground
+	ground = Bodies.rectangle(width/2, 650, width, 10 , {isStatic:true} );
+ 	World.add(world, ground);
+
+
+	Engine.run(engine);
+  
+}
+
+
+function draw() {
   rectMode(CENTER);
   background(0);
-
+  packageSprite.x= packageBody.position.x 
+  packageSprite.y= packageBody.position.y 
   drawSprites();
-  paper.display();
-  ground.display();
-  D1.display();
-  D2.display();
-  D3.display();
+ 
 }
 
-function keyPressed()
-{
+function keyPressed() {
+ if (keyCode === DOWN_ARROW) {
 
-if(keyCode===UP_ARROW) 
-{
-Matter.Body.applyForce(paper.body,paper.body.position,{x:370,y:-370});
+  Matter.Body.setStatic(packageBody,false);  
+  }
 }
 
-}
+
 
