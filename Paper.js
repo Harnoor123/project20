@@ -23,8 +23,8 @@ class Paper
     rotate(angle);
     ellipseMode(CENTER);
     strokeWeight(4);
-    stroke("green");
-    fill("yellow");
+    stroke("blue");
+    fill(255);
     ellipse(0, 0, this.radius);
     pop();
   }
